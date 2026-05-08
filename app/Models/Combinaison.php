@@ -50,7 +50,7 @@ class Combinaison{
     public function get_combinaisons_filtres($allregimes, $allactivites){
         $combinaisons_regimes = Regime::get_combinaisons_regimes_recursives($allregimes);
         $combinaisons_activites = Activite::get_combinaisons_activites_recursives($allactivites);
-
+        $i = 0;
         $combinaisons = [];
         foreach($combinaisons_regimes as $combinaison_regime){
             foreach($combinaisons_activites as $combinaison_activite){

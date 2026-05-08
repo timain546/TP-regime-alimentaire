@@ -31,5 +31,20 @@ class Activite{
         
         return $variation_poids / $variation_poids;
     }
+    public function get_combinaisons_activites_recursives($activites, $index = 0){
+        if($index >= count($activites)){
+            return [[]];
+        }
+        $combinaisons = [];
+        $sous_combinaisons = get_combinaisons_activites_recursives($activites, $index + 1);
+        foreach($sous_combinaisons as $sous_combinaison){
+            $combinaisons[] = array_merge([$activites[$index]], $sous_combinaison);
+            
+            if(count($sous_combinaison) <= 2){
+            $combinaisons[] = $sous_combinaison;
+            }
+        }
+        return $combinaisons;
+    }
 }
 ?>

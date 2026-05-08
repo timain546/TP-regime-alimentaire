@@ -59,5 +59,10 @@ class Regime extends BaseModel
         }
         return $combinaisons;
     }
+    public function cout_plus_gold($regimes, $nb_jours, $remise){
+        $cout_total = get_cout_totals_regimes($regimes, $nb_jours);
+        $cout_reduit = $cout_total * (1 - $remise);
+        return $cout_reduit;
+    }
 }
 ?>

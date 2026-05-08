@@ -1,0 +1,71 @@
+Module	Description	Qui	Estimation	Fait	Reste à faire
+Prerequis	Créer le repo Git	Nandrandraina	5	1	0
+	Configurer les branches main + dev				
+	Initialiser CodeIgniter 4 + config DB				
+	Créer le SQL complet (toutes les tables)				
+	Insérer les données minimales (5 régimes, 5 activités, 15 codes, 5 users)				
+	Définir la liste des tâches google sheets + assignation (qui fait quoi?)				
+					
+Base de données	Création table Client(nom, email, genre, mot_de_passe, is_gold, rôle)				
+	Création table Santé(id_client, date, taille, poids)				
+	Création table RegimeMere(libelle, description)				
+	Création table Aliment(nom)				
+	Création table RegimeFille(id_regime, id_aliment, pourcentage)				
+	Création table DureeRegime(id_regime, variation_poids, nb_jours)				
+	Création table PrixRegime(id_regime, duree_jours, prix)				
+	Création table ActiviteSportive(libelle, intensite)				
+	Création table DureeActivite(id_activite, variation_poids, nb_jours)				
+	Création table CodeRecharge(code,valeur,is_valide)				
+	Création table Transactions(id_client, montant, type(debit ou credit), date)				
+					
+FRONT OFFICE					
+					
+Inscription et login	Page Inscription étape 1: nom, email, genre, mot_de_passe				
+	Page Inscription étape 2: taille, poids				
+	Page login avec session CodeIgniter				
+	Déconnexion + protection routes front				
+					
+Profil & IMC	Calcule et affichage de l'IMC (poids / taille²)				
+	Interprétation IMC (maigre, normale, surpoids, obèse)				
+	Page completion/ édition du profil				
+	Page de choix d'objectif (Perdre du poids, Grossir, atteindre un IMC idéal)				
+					
+Option Gold	Page d'achat de l'option Gold (prix fixe et accès one shot)				
+	Ajouter un badge Gold sur le profil après achat				
+	Application automatique des reductions de 15% sur les remises				
+					
+Intégration Algo	Affichage de la suggestion retourné par l'algo				
+	Affichage activité sportive recommandée + durée				
+					
+Algo de suggestion	Logique de suggestion régime selon IMC + objectif				
+	Association activité sportive selon l'objectif				
+	Calcule prix final (durée x tarif, reduction de 15% si deja gold)				
+					
+Affichage Régime	Page liste des régimes suggérés avec détails				
+	Affichage Composition (% viande/ poisson/ volaille)				
+					
+Porte Monnaie et Code	Formulaire saisie code porte-monnaie (AJAX)				
+	Affichage solde wallet en temps réel				
+	Message d'erreur si code invalide ou déja utilisé				
+					
+Export Pdf	Intégrer mPDF ou TCPDF dans CodeIgniter				
+	Générer PDF: profil + régime + activités + prix				
+	Bouton télécharger sur la page de résultat				
+					
+BACK OFFICE					
+					
+Auth & Dashboard	Page login admin  + session séparée				
+	Middleware protection routes admin				
+	Graphe inscription par semaine				
+	Graphe répartition des objectifs				
+	Tableau croisé régime les plus souscrits				
+	Stats Wallet (montant total, codes validés)				
+					
+Crud	Crud régimes (listes, ajout, édition, suppression)				
+	Validation %viande + poisson + volaille = 100%				
+	Prix variant selon la durée				
+	Crud activités sportives				
+	Génération et validation des codes wallet				
+	Historique codes utilisés par l'user				
+	Crud paramètres globaux (prix Gold, pages IMC)				
+					

@@ -1,0 +1,29 @@
+A:[ ] Créer le repo Git, configurer branches main + dev
+[ ] Initialiser CodeIgniter 4 + config DB
+[ ] Créer le script SQL complet (toutes les tables)
+[ ] Insérer les données minimales (5 régimes, 5 activités, 15 codes, 5 users)
+[ ] Définir la liste des tâches Google Sheets + assignation
+
+BASE DE DONNÉES
+[ ] Table users (id, nom, email, mdp, genre, taille, poids, gold, wallet)
+[ ] Table regimes (prix, durée, variation_poids, % viande/poisson/volaille)
+[ ] Table activites (nom, description, durée, objectif)
+[ ] Table codes (code, montant, utilisé)
+[ ] Table user_regimes (suivi souscriptions)
+
+BACK OFFICE — AUTH & DASHBOARD
+[ ] Page login admin + session séparée
+[ ] Middleware protection routes admin
+[ ] Graphe inscriptions par semaine
+[ ] Graphe répartition des objectifs
+[ ] Tableau croisé régimes les plus souscrits
+[ ] Stats wallet (montant total, codes validés)
+
+BACK OFFICE — CRUD
+[ ] CRUD régimes (liste, ajout, édition, suppression)
+[ ] Validation % viande + poisson + volaille = 100%
+[ ] Prix variant selon la durée
+[ ] CRUD activités sportives
+[ ] Génération et validation des codes wallet
+[ ] Historique codes utilisés par user
+[ ] CRUD paramètres globaux (prix Gold, plages IMC)

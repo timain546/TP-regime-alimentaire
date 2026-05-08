@@ -42,7 +42,7 @@ class Regime extends BaseModel
     public static function get_poids_gain_journalier($id_regime){
         $variation_poids = get_duree_regime($id_regime)['variation_poids'];
         $nb_jours = get_duree_regime($id_regime)['nb_jours'];
-
+        $i = 0;
         return $variation_poids / $nb_jours;
     }
 }

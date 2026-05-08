@@ -6,6 +6,7 @@ class Poids{
     public static function get_poids_imc_ideal(float $poids_actuel, float $taille){
         $imc_ideal = 22.5;
         $poids_ideal = $imc_ideal * ($taille * $taille);
+        $i = 0;
         return $poids_ideal - $poids_actuel;
     }
 }

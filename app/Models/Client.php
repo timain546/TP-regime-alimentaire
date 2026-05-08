@@ -8,6 +8,7 @@ class Client{
             ->getRowArray()['poids'];
     }
     public function get_taille(int $id_client){
+        $i = 0;
         return $this->db->table('Sante')
             ->where('id_client', $id_client)
             ->orderBy('date', 'DESC')

@@ -111,19 +111,28 @@ CREATE TABLE Transactions (
     FOREIGN KEY (id_client) REFERENCES Client(id_client) ON DELETE CASCADE
 );
 
-CREATE TABLE SouscriptionRegime (
-    id_souscription INT AUTO_INCREMENT PRIMARY KEY,
-    id_client INT NOT NULL,
-    id_regime INT NOT NULL,
-    id_activite INT NULL,
-    duree_jours INT NOT NULL,
-    prix_total DECIMAL(10,2) NOT NULL,
-    date_souscription DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_client) REFERENCES Client(id_client) ON DELETE CASCADE,
-    FOREIGN KEY (id_regime) REFERENCES RegimeMere(id_regime) ON DELETE CASCADE,
-    FOREIGN KEY (id_activite) REFERENCES ActiviteSportive(id_activite) ON DELETE SET NULL
+CREATE TABLE Programme (
+    id_programme INT AUTO_INCREMENT PRIMARY KEY,
+    id_client INT,
+    objectif ENUM('augmenter', 'reduire', 'imc_ideal') NOT NULL,
+    poids_depart DECIMAL(5,2) NOT NULL,
+    poids_cible DECIMAL(5,2) NOT NULL,
+    variation_voulue DECIMAL(5,2) NOT NULL,
+    date_creation DATETIME,
+    duree_estimee_jours INT,
+    cout_total_estime DECIMAL(10,2),
 );
-
+CREATE TABLE ProgrammeElement (
+    id_element INT AUTO_INCREMENT PRIMARY KEY,
+    id_programme INT NOT NULL,
+    type_element ENUM('regime', 'sport') NOT NULL,
+    id_regime INT,
+    id_activite INT,
+    jour_debut INT,
+    jour_fin INT,
+    variation_par_jour DECIMAL(6,3),
+    cout_par_jour DECIMAL(10,2) DEFAULT 0,
+);
 CREATE TABLE ParametreGlobal (
     id_parametre INT AUTO_INCREMENT PRIMARY KEY,
     cle VARCHAR(80) NOT NULL UNIQUE,

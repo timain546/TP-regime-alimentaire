@@ -45,5 +45,19 @@ class Regime extends BaseModel
         $i = 0;
         return $variation_poids / $nb_jours;
     }
+    public static function get_combinaisons_regimes_recursives($regimes, $index = 0){
+        if($index >= count($regimes)){
+            return [[]];
+        }
+        $combinaisons = [];
+        $sous_combinaisons = get_combinaisons_regimes_recursives($regimes, $index + 1);
+        foreach($sous_combinaisons as $sous_combinaison){
+            $combinaisons[] = array_merge([$regimes[$index]], $sous_combinaison);
+            if(count($sous_combinaison) <= 3 && count($sous_combinaison) >= 0){
+            $combinaisons[] = $sous_combinaison;
+            }
+        }
+        return $combinaisons;
+    }
 }
 ?>

@@ -36,3 +36,7 @@ $routes->group('admin', ['filter' => 'adminauth'], static function ($routes) {
     $routes->get('settings', 'Admin\Settings::index');
     $routes->post('settings/update', 'Admin\Settings::update');
 });
+
+$routes->group('suggestion', static function ($routes) {
+    $routes->get('/', 'SuggestionController::index');
+});

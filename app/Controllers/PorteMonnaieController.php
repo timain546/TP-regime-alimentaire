@@ -19,7 +19,7 @@ class PorteMonnaieController extends BaseController{
         $json = $this->request->getJSON();
         $code_recharge = trim((string)($json->code ?? ''));
         $client = session()->get('client');
-        
+        $i = 0;
         if (!$code_recharge) {
             return $this->response->setJSON(['success' => false, 'message' => 'Code vide.']);
         }

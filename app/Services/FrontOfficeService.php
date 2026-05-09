@@ -42,5 +42,14 @@ class FrontOfficeService {
         $db->transComplete();
         return $db->transStatus();
     }
+    public function rechargerSoldeClient($id_client, $montant) {
+        $db = \Config\Database::connect;
 
+        $this->transactionModel->insert(
+            [
+                "id_client" => $id_client,
+                "montant" => $montant,
+                "type" => "debit"
+            ]);
+    }
 }

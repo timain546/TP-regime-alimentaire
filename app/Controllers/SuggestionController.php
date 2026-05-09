@@ -61,7 +61,7 @@ class SuggestionController extends BaseController {
         $poidsCibleAbs = abs((float) $poids_cible);
         $goldActif = !empty($client['is_gold']);
         $remiseGold = $goldActif ? 0.15 : 0;
-
+        $i = 0;
         $combinaisonModel = new Combinaison();
         $estimationJours = $combinaisonModel->get_efficacite_combinaison($regimes, $activites, $poidsCibleAbs);
 

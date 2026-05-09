@@ -219,8 +219,8 @@ INSERT INTO CodeRecharge (code, valeur, is_valide) VALUES
 ('REGIM-015', 80000, 1);
 
 INSERT INTO Transactions (id_client, montant, type, date) VALUES
-(2, 20000, 'credit', '2026-05-08 08:00:00'),
-(3, 10000, 'credit', '2026-05-08 08:10:00'),
+(2, 20000, 'debit', '2026-05-08 08:00:00'),
+(3, 10000, 'debit', '2026-05-08 08:10:00'),
 (4, 93500, 'debit', '2026-05-08 08:20:00');
 
 INSERT INTO SouscriptionRegime (id_client, id_regime, id_activite, duree_jours, prix_total, date_souscription) VALUES

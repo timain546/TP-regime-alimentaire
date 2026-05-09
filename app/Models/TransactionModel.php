@@ -4,15 +4,15 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class ClientModel extends Model
+class TransactionModel extends Model
 {
-    protected $table            = 'Client';
-    protected $primaryKey       = 'id_client';
+    protected $table            = 'Transactions';
+    protected $primaryKey       = 'id_transaction';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['nom', 'email', 'genre', 'mot_de_passe', 'objectif', 'is_gold'];
+    protected $allowedFields    = ['id_client', 'montant', 'type', 'date'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

@@ -3,15 +3,18 @@
 namespace App\Controllers\FrontOffice;
 
 use App\Controllers\BaseController;
+use App\Services\FrontOfficeService;
 
 class FrontOfficeController extends BaseController {
 
     private $clientModel;
     private $santeModel;
+    private $frontOfficeService;
 
     public function __construct() {
         $this->clientModel = model('ClientModel');
         $this->santeModel = model('SanteModel');
+        $this->frontOfficeService = new FrontOfficeService();
     }
 
     public function login() {
@@ -24,6 +27,11 @@ class FrontOfficeController extends BaseController {
 
     public function inscriptionSante() {
         return view('frontoffice/sante');
+    }
+
+    public function logout() {
+        session()->destroy();
+        return redirect()->to(base_url("auth/login"));
     }
 
     public function dashboard() {
@@ -65,9 +73,14 @@ class FrontOfficeController extends BaseController {
         ]);
     }
 
-    public function logout() {
-        session()->destroy();
-        return redirect()->to(base_url("auth/login"));
+    public function gold() {
+        if(!session()->get('is_connected')) {
+            return redirect()->to(base_url('auth/login'));
+        }
+
+        return view("frontoffice/achat-gold", [
+            "solde_compte" => $this->frontOfficeService->getSoldeClient(session()->get('client')['id_client'])
+        ]);
     }
 
     public function attemptLogin() {
@@ -169,5 +182,35 @@ class FrontOfficeController extends BaseController {
 
         $this->santeModel->insert($data);
         return redirect()->to(base_url('profil'));
+    }
+
+    public function confirmerAchatGold() {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403);
+        }
+
+        $userSession = session()->get('client');
+        $solde = $this->frontOfficeService->getSoldeClient($userSession['id_client']);
+
+        if ($solde < 10000) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => "Solde insuffisant (Actuel: " . number_format($solde, 0, '', ' ') . " Ar)"
+            ]);
+        }
+        $succes = $this->frontOfficeService->procederAchatGold($userSession['id_client'], 10000);
+
+        if ($succes) {
+            $userSession = session()->get('client');
+            $userSession['is_gold'] = 1;
+            session()->set('client', $userSession);
+
+            return $this->response->setJSON(['success' => true]);
+        }
+
+        return $this->response->setJSON([
+            'success' => false,
+            'message' => "Erreur technique lors de la transaction."
+        ]);
     }
 }

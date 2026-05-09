@@ -131,6 +131,18 @@
         .btn:hover {
             background-color: #2980b9;
         }
+
+        .badge-gold-mini {
+            background: linear-gradient(45deg, #f1c40f, #d4af37);
+            color: #fff;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            font-weight: bold;
+            box-shadow: 0 0 5px rgba(241, 196, 15, 0.5);
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
@@ -140,9 +152,15 @@
         <h2>Mon App</h2>
         <ul>
             <li><a href="/dashboard">🏠 Accueil</a></li>
-            <li><a href="/profil">👤 Profil</a></li>
-            <li><a href="/objectif">🎯 Objectif</a></li>
+            <li><a href="/profil">
+                👤 Profil
+                <?php if(session()->get('client')['is_gold'] == 1): ?>
+                    <span class="badge-gold-mini">GOLD</span>
+                <?php endif; ?>
+            </a></li>
+            <li><a href="/suggestion">🎯 Objectif</a></li>
             <li><a href="/porte_monnaie">💰 Porte Monnaie</a></li>
+            <li><a href="/gold">👑 Achat gold</a></li>
             <li><a href="/logout">🚪 Deconnexion</a></li>
         </ul>
     </nav>
@@ -164,6 +182,18 @@
             <div class="card">
                 <h3>IMC</h3>
                 <p><?= number_format($imc_actuel, 2, ".", "") ?></p>
+
+                <!--Interpretation de l'IMC (insuffisant, normal, surpoids, obèse) -->
+                <?php if($imc_actuel < 18.0) { ?>
+                    <h3>Insuffisant</h3>
+                <?php } else if($imc_actuel >= 18.0 && $imc_actuel < 24.0) { ?>
+                    <h3>Normal</h3>
+                <?php } else if($imc_actuel >= 24.0 && $imc_actuel < 32.0) { ?>
+                    <h3>Surpoids</h3>
+                <?php } else { ?>
+                    <h3>Obese</h3>
+                <?php } ?>
+
             </div>
         </div>
 
@@ -172,7 +202,7 @@
             <h3>Actions rapides</h3>
             <div class="btn-group">
                 <a href="/profil" class="btn">Mettre à jour mon Profil</a>
-                <a href="/objectif" class="btn">Définir un Objectif</a>
+                <a href="/suggestion" class="btn">Définir un Objectif</a>
                 <a href="/porte_monnaie" class="btn">Consulter mon Solde</a>
             </div>
         </section>

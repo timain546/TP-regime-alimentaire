@@ -47,6 +47,8 @@ $routes->get("/dashboard", "FrontOffice\FrontOfficeController::dashboard");
 $routes->get("/logout", "FrontOffice\FrontOfficeController::logout");
 $routes->get("/profil", "FrontOffice\FrontOfficeController::profil");
 $routes->post("/api/sante/edit", "FrontOffice\FrontOfficeController::editSante");
+$routes->get("/gold", "FrontOffice\FrontOfficeController::gold");
+$routes->post("/gold/confirmer", "FrontOffice\FrontOfficeController::confirmerAchatGold");
 
 $routes->group('suggestion', static function ($routes) {
     $routes->get('/', 'SuggestionController::index');

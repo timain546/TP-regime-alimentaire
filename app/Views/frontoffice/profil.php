@@ -166,6 +166,18 @@
             background-color: #fcfcfc;
         }
 
+        .badge-gold-mini {
+            background: linear-gradient(45deg, #f1c40f, #d4af37);
+            color: #fff;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            font-weight: bold;
+            box-shadow: 0 0 5px rgba(241, 196, 15, 0.5);
+            vertical-align: middle;
+        }
+
     </style>
 </head>
 <body>
@@ -175,9 +187,15 @@
         <h2>Mon App</h2>
         <ul>
             <li><a href="/dashboard">🏠 Accueil</a></li>
-            <li><a href="/profil">👤 Profil</a></li>
+            <li><a href="/profil">
+                👤 Profil
+                <?php if(session()->get('client')['is_gold'] == 1): ?>
+                    <span class="badge-gold-mini">GOLD</span>
+                <?php endif; ?>
+            </a></li>
             <li><a href="/objectif">🎯 Objectif</a></li>
             <li><a href="/porte_monnaie">💰 Porte Monnaie</a></li>
+            <li><a href="/gold">👑 Achat gold</a></li>
             <li><a href="/logout">🚪 Deconnexion</a></li>
         </ul>
     </nav>

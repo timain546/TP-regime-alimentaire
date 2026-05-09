@@ -22,37 +22,37 @@ class FrontOfficeController extends BaseController {
         return view('frontoffice/inscription');
     }
 
-    public function inscriptionSante($id) {
+    public function inscriptionSante() {
+        return view('frontoffice/sante');
+    }
+
+    public function dashboard() {
         if(!session()->get('is_connected')) {
-            return view('frontoffice/login');
+            return redirect()->to(base_url('auth/login'));
         }
+        return view('frontoffice/dashboard');
+    }
 
-        $userEnSession = session()->get('client');
-        if($userEnSession['id_client'] != $id) {
-            return view('frontoffice/login');
-        }
-
-        return view('frontoffice/sante.php', ['identifiant_client' => $id]);
+    public function logout() {
+        session()->destroy();
+        return redirect()->to(base_url("auth/login"));
     }
 
     public function attemptLogin() {
-        sleep(2);
-
         $json = $this->request->getJSON();
+        $email = trim((string)($json->email ?? ''));
+        $mdp = (string)($json->mdp ?? '');
 
-        $email = trim((string) ($json->email ?? ''));
-        $mdp = (string) ($json->mdp ?? '');
         $client = $this->clientModel->where('email', $email)
                                     ->where('role', 'client')
                                     ->first();
-                            
+
         $validPassword = $client && (password_verify($mdp, $client['mot_de_passe']) || $mdp === $client['mot_de_passe']);
-        if(!$validPassword) {
-            $response = [
+        if (!$validPassword) {
+            return $this->response->setJSON([
                 "succes" => false,
-                "message" => "email ou mot de passe incorrect"
-            ];
-            return $this->response->setJSON($response);
+                "message" => "Email ou mot de passe incorrect"
+            ]);
         }
 
         session()->set([
@@ -60,52 +60,70 @@ class FrontOfficeController extends BaseController {
             'client' => $client
         ]);
 
-        $response = [
+        return $this->response->setJSON([
             "succes" => true,
             "redirect" => base_url("dashboard")
-        ];
-
-        return $this->response->setJSON($response);
+        ]);
     }
 
     public function creerClient() {
         $json = $this->request->getJSON();
-        $client = [
-            "nom" => trim((string)($json->nom ?? '')),
-            "email" => trim((string)($json->email ?? '')),
-            "genre" => (string) ($json->genre ?? ''),
-            "mot_de_passe" => (string) ($json->mdp ?? '')
+
+        $rules = [
+            'email' => 'required|valid_email|is_unique[Client.email]',
+            'nom'   => 'required|min_length[2]',
+            'mdp'   => 'required|min_length[6]',
+            'genre' => 'required'
         ];
 
-        $this->clientModel->insert($client);
-        $nouvelId = $this->clientModel->getInsertID();
+        if (!$this->validate($rules)) {
+            return $this->response->setJSON([
+                "succes" => false, 
+                "errors" => $this->validator->getErrors()
+            ]);
+        }
 
-        $client['id_client'] = $nouvelId;
+        $data = [
+            "nom"          => trim((string)$json->nom),
+            "email"        => trim((string)$json->email),
+            "genre"        => (string)$json->genre,
+            "mot_de_passe" => password_hash((string)$json->mdp, PASSWORD_DEFAULT),
+            "role"         => "client"
+        ];
+
+        $this->clientModel->insert($data);
+        $data['id_client'] = $this->clientModel->getInsertID();
 
         session()->set([
             'is_connected' => true,
-            'client' => $client
+            'client' => $data
         ]);
 
         return $this->response->setJSON([
             "succes" => true,
-            "id" => $nouvelId,
-            "redirect" => base_url("sante/form")
+            "redirect" => base_url("sante/form/")
         ]);
     }
 
     public function creerSante() {
+        if(!session()->get('is_connected')) {
+            return $this->response->setStatusCode(403)->setJSON(["message" => "Accès refusé"]);
+        }
+
         $json = $this->request->getJSON();
+        $userSession = session()->get('client');
+
         $sante = [
-            "id_client" => (int) $json->id_client,
-            "taille" => (float) ($json->taille ?? 0.0),
-            "poids" => (float) ($json->poids ?? 0.0)
+            "id_client" => $userSession['id_client'],
+            "taille"    => (float)($json->taille ?? 0.0),
+            "poids"     => (float)($json->poids ?? 0.0)
         ];
+
         $this->santeModel->insert($sante);
+
         return $this->response->setJSON([
             "succes" => true,
             "redirect" => base_url("dashboard")
         ]);
     }
-
 }

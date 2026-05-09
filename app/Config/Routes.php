@@ -41,9 +41,11 @@ $routes->get("/auth/login", "FrontOffice\FrontOfficeController::login");
 $routes->post("/api/auth/login", "FrontOffice\FrontOfficeController::attemptLogin");
 $routes->get("/client/form", "FrontOffice\FrontOfficeController::inscription");
 $routes->post("/api/client/create", "FrontOffice\FrontOfficeController::creerClient");
-$routes->get("/sante/form/(:num)", "FrontOffice\FrontOfficeController::inscriptionSante/$1");
-
+$routes->get("/sante/form", "FrontOffice\FrontOfficeController::inscriptionSante");
 $routes->post("/api/sante/create", "FrontOffice\FrontOfficeController::creerSante");
+$routes->get("/dashboard", "FrontOffice\FrontOfficeController::dashboard");
+$routes->get("/logout", "FrontOffice\FrontOfficeController::logout");
+
 $routes->group('suggestion', static function ($routes) {
     $routes->get('/', 'SuggestionController::index');
 });

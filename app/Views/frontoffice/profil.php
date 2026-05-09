@@ -193,7 +193,7 @@
                     <span class="badge-gold-mini">GOLD</span>
                 <?php endif; ?>
             </a></li>
-            <li><a href="/objectif">🎯 Objectif</a></li>
+            <li><a href="/suggestion">🎯 Objectif</a></li>
             <li><a href="/porte_monnaie">💰 Porte Monnaie</a></li>
             <li><a href="/gold">👑 Achat gold</a></li>
             <li><a href="/logout">🚪 Deconnexion</a></li>

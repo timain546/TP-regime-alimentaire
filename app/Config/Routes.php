@@ -45,6 +45,8 @@ $routes->get("/sante/form", "FrontOffice\FrontOfficeController::inscriptionSante
 $routes->post("/api/sante/create", "FrontOffice\FrontOfficeController::creerSante");
 $routes->get("/dashboard", "FrontOffice\FrontOfficeController::dashboard");
 $routes->get("/logout", "FrontOffice\FrontOfficeController::logout");
+$routes->get("/profil", "FrontOffice\FrontOfficeController::profil");
+$routes->post("/api/sante/edit", "FrontOffice\FrontOfficeController::editSante");
 
 $routes->group('suggestion', static function ($routes) {
     $routes->get('/', 'SuggestionController::index');

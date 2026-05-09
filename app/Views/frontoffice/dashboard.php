@@ -1,14 +1,3 @@
-<?php
-$santeModel = model('SanteModel');
-$client = session()->get('client');
-
-$sante = $santeModel->where('id_client', $client['id_client'])
-                    ->orderBy('date', 'DESC')
-                    ->first();
-
-$imc_actuel = $sante['poids'] / ($sante['taille'] / 100 * $sante['taille'] / 100);
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -166,11 +155,11 @@ $imc_actuel = $sante['poids'] / ($sante['taille'] / 100 * $sante['taille'] / 100
         <div class="stats-grid">
             <div class="card">
                 <h3>Poids</h3>
-                <p><?= $sante['poids'] ?> kg</p>
+                <p><?= $poids ?> kg</p>
             </div>
             <div class="card">
                 <h3>Taille</h3>
-                <p><?= $sante['taille'] ?> cm</p>
+                <p><?= $taille ?> cm</p>
             </div>
             <div class="card">
                 <h3>IMC</h3>
@@ -182,9 +171,9 @@ $imc_actuel = $sante['poids'] / ($sante['taille'] / 100 * $sante['taille'] / 100
         <section class="quick-links">
             <h3>Actions rapides</h3>
             <div class="btn-group">
-                <a href="profil.php" class="btn">Mettre à jour mon Profil</a>
-                <a href="objectif.php" class="btn">Définir un Objectif</a>
-                <a href="porte_monnaie.php" class="btn">Consulter mon Solde</a>
+                <a href="/profil" class="btn">Mettre à jour mon Profil</a>
+                <a href="/objectif" class="btn">Définir un Objectif</a>
+                <a href="/porte_monnaie" class="btn">Consulter mon Solde</a>
             </div>
         </section>
     </main>

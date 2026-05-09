@@ -843,3 +843,53 @@ in SYSTEMPATH/Database/MySQLi/Connection.php on line 300.
  8 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
  9 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
 10 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+CRITICAL - 2026-05-09 14:38:05 --> ErrorException: Trying to access array offset on null
+[Method: GET, Route: dashboard]
+in APPPATH/Controllers/FrontOffice/FrontOfficeController.php on line 39.
+ 1 APPPATH/Controllers/FrontOffice/FrontOfficeController.php(39): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\FrontOffice\FrontOfficeController->dashboard()
+ 3 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 5 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 7 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+CRITICAL - 2026-05-09 14:38:07 --> ErrorException: Undefined array key -1
+[Method: GET, Route: profil]
+in APPPATH/Controllers/FrontOffice/FrontOfficeController.php on line 59.
+ 1 APPPATH/Controllers/FrontOffice/FrontOfficeController.php(59): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\FrontOffice\FrontOfficeController->profil()
+ 3 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 5 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 7 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+CRITICAL - 2026-05-09 14:38:08 --> ErrorException: Undefined array key -1
+[Method: GET, Route: profil]
+in APPPATH/Controllers/FrontOffice/FrontOfficeController.php on line 59.
+ 1 APPPATH/Controllers/FrontOffice/FrontOfficeController.php(59): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\FrontOffice\FrontOfficeController->profil()
+ 3 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 5 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 7 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+CRITICAL - 2026-05-09 14:38:08 --> ErrorException: Trying to access array offset on null
+[Method: GET, Route: dashboard]
+in APPPATH/Controllers/FrontOffice/FrontOfficeController.php on line 39.
+ 1 APPPATH/Controllers/FrontOffice/FrontOfficeController.php(39): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\FrontOffice\FrontOfficeController->dashboard()
+ 3 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 5 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 7 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+CRITICAL - 2026-05-09 14:38:10 --> ErrorException: Undefined array key -1
+[Method: GET, Route: profil]
+in APPPATH/Controllers/FrontOffice/FrontOfficeController.php on line 59.
+ 1 APPPATH/Controllers/FrontOffice/FrontOfficeController.php(59): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\FrontOffice\FrontOfficeController->profil()
+ 3 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 5 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 7 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()

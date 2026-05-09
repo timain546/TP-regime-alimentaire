@@ -30,7 +30,39 @@ class FrontOfficeController extends BaseController {
         if(!session()->get('is_connected')) {
             return redirect()->to(base_url('auth/login'));
         }
-        return view('frontoffice/dashboard');
+
+        $client = session()->get('client');
+        $sante = $this->santeModel->where('id_client', $client['id_client'])
+                                  ->orderBy('date', 'DESC')
+                                  ->first();
+
+        $imc_actuel = $sante['poids'] / ($sante['taille'] / 100 * $sante['taille'] / 100);
+
+        return view('frontoffice/dashboard', [
+            'poids' => $sante['poids'],
+            'taille' => $sante['taille'],
+            'imc_actuel' => $imc_actuel
+        ]);
+    }
+
+    public function profil() {
+        if(!session()->get('is_connected')) {
+            return redirect()->to(base_url('auth/login'));
+        }
+
+        $client = session()->get('client');
+        $sante = $this->santeModel->where('id_client', $client['id_client'])
+                                  ->orderBy('date', 'ASC')
+                                  ->findAll();
+        $len = count($sante);
+        $sante_actuel = $sante[$len-1];
+
+        return view('frontoffice/profil', [
+            'client' => $client,
+            'sante' => $sante,
+            'taille' => $sante_actuel['taille'],
+            'poids' => $sante_actuel['poids']
+        ]);
     }
 
     public function logout() {
@@ -125,5 +157,17 @@ class FrontOfficeController extends BaseController {
             "succes" => true,
             "redirect" => base_url("dashboard")
         ]);
+    }
+
+    public function editSante() {
+        $userSession = session()->get('client');
+        $data = [
+            "id_client" => $userSession['id_client'],
+            "taille" => (float) ($this->request->getPost('taille') ?? 0.0),
+            "poids" => (float) ($this->request->getPost('poids') ?? 0.0)
+        ];
+
+        $this->santeModel->insert($data);
+        return redirect()->to(base_url('profil'));
     }
 }

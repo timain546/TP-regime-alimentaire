@@ -1,0 +1,19 @@
+B:[ ] Page inscription étape 1 : nom, email, genre, mot de passe
+[ ] Page inscription étape 2 : taille, poids
+[ ] Page login avec session CodeIgniter
+[ ] Déconnexion + protection routes front
+
+PROFIL & IMC
+[ ] Calcul et affichage de l'IMC (poids / taille²)
+[ ] Interprétation IMC (insuffisant, normal, surpoids, obèse)
+[ ] Page complétion / édition du profil
+[ ] Choix de l'objectif (augmenter / réduire / IMC idéal)
+
+OPTION GOLD
+[ ] Page achat option Gold (prix fixe, accès one-shot)
+[ ] Affichage badge Gold sur profil après achat
+[ ] Application automatique remise 15% sur les régimes
+
+INTÉGRATION ALGO 
+[ ] Affichage de la suggestion retournée par l'algo
+[ ] Affichage activité sportive recommandée + durée

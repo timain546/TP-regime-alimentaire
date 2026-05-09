@@ -37,6 +37,13 @@ $routes->group('admin', ['filter' => 'adminauth'], static function ($routes) {
     $routes->post('settings/update', 'Admin\Settings::update');
 });
 
+$routes->get("/auth/login", "FrontOffice\FrontOfficeController::login");
+$routes->post("/api/auth/login", "FrontOffice\FrontOfficeController::attemptLogin");
+$routes->get("/client/form", "FrontOffice\FrontOfficeController::inscription");
+$routes->post("/api/client/create", "FrontOffice\FrontOfficeController::creerClient");
+$routes->get("/sante/form/(:num)", "FrontOffice\FrontOfficeController::inscriptionSante/$1");
+
+$routes->post("/api/sante/create", "FrontOffice\FrontOfficeController::creerSante");
 $routes->group('suggestion', static function ($routes) {
     $routes->get('/', 'SuggestionController::index');
 });

@@ -54,3 +54,7 @@ $routes->group('suggestion', static function ($routes) {
     $routes->get('/', 'SuggestionController::index');
     $routes->post('/voir', 'SuggestionController::voir');
 });
+$routes->group('porte_monnaie', static function ($routes){
+    $routes->get('/','PorteMonnaieController::index');
+    $routes->post('/code', 'PorteMonnaieController::verifier_code');
+});

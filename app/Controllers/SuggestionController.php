@@ -122,7 +122,7 @@ class SuggestionController extends BaseController {
         }
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
         $fileName = 'suggestion_' . date('Ymd_His') . '.pdf';
-
+        $i = 0;
         return $this->response
             ->setHeader('Content-Type', 'application/pdf')
             ->setHeader('Content-Disposition', 'attachment; filename="' . $fileName . '"')

@@ -53,6 +53,7 @@ $routes->post("/gold/confirmer", "FrontOffice\FrontOfficeController::confirmerAc
 $routes->group('suggestion', static function ($routes) {
     $routes->get('/', 'SuggestionController::index');
     $routes->post('/voir', 'SuggestionController::voir');
+    $routes->get('/pdf', 'SuggestionController::pdf');
 });
 $routes->group('porte_monnaie', static function ($routes){
     $routes->get('/','PorteMonnaieController::index');

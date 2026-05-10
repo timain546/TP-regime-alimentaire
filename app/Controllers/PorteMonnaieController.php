@@ -36,7 +36,12 @@ class PorteMonnaieController extends BaseController{
                     $codeModel->db->table('CodeRecharge')
                         ->where('code', $code_recharge)
                         ->update(['is_utilise' => 1, 'id_client' => $client['id_client'], 'date_utilisation' => date('Y-m-d H:i:s')]);
-                    return $this->response->setJSON(['success' => true, 'message' => 'Code valide ! Votre solde a été rechargé de ' . $code_info['valeur'] . ' gold.']);
+                    $soldeActuel = $frontOfficeService->getSoldeClient($client['id_client']);
+                    return $this->response->setJSON([
+                        'success' => true,
+                        'message' => 'Code valide ! Votre solde a été rechargé de ' . $code_info['valeur'] . ' gold.',
+                        'solde_actuel' => $soldeActuel,
+                    ]);
                 } else {
                     return $this->response->setJSON(['success' => false, 'message' => 'Code invalide.']);
                 }

@@ -1,9 +1,10 @@
 <?php
 namespace App\Controllers;
-use app\Models\Regime;
-use app\Models\Activite;
-use app\Models\Combinaison;
-use app\Models\Client;
+use App\Models\Regime;
+use App\Models\Activite;
+use App\Models\Combinaison;
+use App\Models\Client;
+use App\Models\SanteModel;
 
 class SuggestionController extends BaseController {
     
@@ -27,7 +28,7 @@ class SuggestionController extends BaseController {
         $client = session()->get('client');
         $objectif = $this->request->getPost('objectif');
         $kg = $this->request->getPost('kg');
-        $priorites = $this->request->getPost('priorite');
+        $priorites = (array) $this->request->getPost('priorite');
 
         $poids_user = Client::get_poids_actuel($client['id_client']);
         $poids_cible = 0;
@@ -79,8 +80,52 @@ class SuggestionController extends BaseController {
             'estimation_jours' => $estimationJours,
             'prix_base_estime' => $prixBaseEstime,
             'prix_final_estime' => $prixFinalEstime,
+            'client' => $client,
         ];
 
+        $santeModel = new SanteModel();
+        $sante = $santeModel->where('id_client', $client['id_client'])
+            ->orderBy('date', 'DESC')
+            ->first();
+        $data['sante'] = $sante ?? [];
+
+        session()->set('suggestion_pdf_data', $data);
+
         return view('suggestion_resultat', $data);
+    }
+
+    public function pdf() {
+        if (!session()->get('is_connected')) {
+            return redirect()->to(base_url('auth/login'));
+        }
+
+        $data = session()->get('suggestion_pdf_data');
+        if (empty($data)) {
+            return redirect()->to(base_url('suggestion'));
+        }
+
+        if (!class_exists('\\Mpdf\\Mpdf')) {
+            return $this->response->setStatusCode(500)->setBody('mPDF n\'est pas installe. Installez-le avec: composer require mpdf/mpdf');
+        }
+
+        $cssPath = FCPATH . 'css/suggestion_pdf.css';
+        $css = is_file($cssPath) ? (string) file_get_contents($cssPath) : '';
+        $html = view('suggestion_pdf', $data);
+        $mpdf = new \Mpdf\Mpdf([
+            'tempDir' => WRITEPATH . 'cache',
+            'mode' => 'utf-8',
+            'format' => 'A4',
+        ]);
+
+        if ($css !== '') {
+            $mpdf->WriteHTML($css, \Mpdf\HTMLParserMode::HEADER_CSS);
+        }
+        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+        $fileName = 'suggestion_' . date('Ymd_His') . '.pdf';
+
+        return $this->response
+            ->setHeader('Content-Type', 'application/pdf')
+            ->setHeader('Content-Disposition', 'attachment; filename="' . $fileName . '"')
+            ->setBody($mpdf->Output($fileName, 'S'));
     }
 }

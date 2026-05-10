@@ -1,0 +1,48 @@
+body {
+    font-family: DejaVu Sans, Arial, sans-serif;
+    font-size: 12px;
+    color: #1f2d3d;
+}
+
+h1 {
+    margin-bottom: 4px;
+    font-size: 22px;
+    color: #18324a;
+}
+
+h2 {
+    margin: 22px 0 8px;
+    font-size: 16px;
+    color: #27465f;
+    border-bottom: 1px solid #dce5ef;
+    padding-bottom: 4px;
+}
+
+.muted {
+    color: #6b7a8c;
+    margin-bottom: 12px;
+}
+
+.grid {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.grid th,
+.grid td {
+    border: 1px solid #dce5ef;
+    padding: 8px;
+    vertical-align: top;
+}
+
+.grid th {
+    background: #eef4fb;
+    text-align: left;
+}
+
+.summary {
+    background: #f8fbfe;
+    border: 1px solid #dce5ef;
+    padding: 10px;
+    margin-top: 10px;
+}

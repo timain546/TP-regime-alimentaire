@@ -146,7 +146,7 @@
                 </div>
 
                 <div class="actions">
-                    <button type="button" class="btn btn-primary" onclick="window.print(); return false;">Télécharger en PDF</button>
+                    <a class="btn btn-primary" href="<?= base_url('suggestion/pdf') ?>">Télécharger en PDF</a>
                     <a class="btn btn-secondary" href="<?= base_url('suggestion') ?>">Modifier ma demande</a>
                 </div>
             </div>

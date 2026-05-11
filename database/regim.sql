@@ -223,10 +223,6 @@ INSERT INTO Transactions (id_client, montant, type, date) VALUES
 (3, 10000, 'debit', '2026-05-08 08:10:00'),
 (4, 93500, 'debit', '2026-05-08 08:20:00');
 
-INSERT INTO SouscriptionRegime (id_client, id_regime, id_activite, duree_jours, prix_total, date_souscription) VALUES
-(2, 5, 4, 40, 125000, '2026-05-08 08:30:00'),
-(3, 1, 1, 30, 90000, '2026-05-08 08:40:00'),
-(4, 3, 3, 30, 93500, '2026-05-08 08:50:00');
 
 INSERT INTO ParametreGlobal (cle, valeur, description) VALUES
 ('prix_gold', '50000', 'Prix unique de l option Gold'),

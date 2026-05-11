@@ -19,6 +19,38 @@ class Combinaison{
         }
     }
 
+    private function yieldRegimeActiviteCombos(
+        array $regimes,
+        array $activites,
+        int $minRegimes,
+        int $maxRegimes,
+        int $minActivites,
+        int $maxActivites
+    ): \Generator
+    {
+        for ($kr = $minRegimes; $kr <= min($maxRegimes, count($regimes)); $kr++) {
+            foreach ($this->yieldCombinations($regimes, $kr) as $combReg) {
+                for ($ka = $minActivites; $ka <= min($maxActivites, count($activites)); $ka++) {
+                    foreach ($this->yieldCombinations($activites, $ka) as $combAct) {
+                        yield [$combReg, $combAct];
+                    }
+                }
+            }
+        }
+    }
+
+    private function get_metrics_combinaison(array $regimes, array $activites, $poids_objectif): array
+    {
+        $regimeModel = new Regime();
+        $activiteModel = new Activite();
+
+        $jours = (float)$this->get_efficacite_combinaison($regimes, $activites, $poids_objectif);
+        $cout = (float)$regimeModel->get_cout_totals_regimes($regimes, $jours);
+        $intensite = (float)$activiteModel->get_intensites_somme($activites);
+
+        return [$jours, $cout, $intensite];
+    }
+
     public function get_efficacite_combinaison($regimes, $activites, $poids_objectif){
         $poids_gain_regime = 0;
         $poids_gain_activite = 0;
@@ -30,40 +62,32 @@ class Combinaison{
         foreach($activites as $activite){
             $poids_gain_activite += $activiteModel->get_variation_poids_journalier($activite['id_activite']);
         }
-        $poids_gagnes_journalier = $poids_gain_activite + $poids_gain_regime;
-        $progression_par_jour = abs((float)$poids_gagnes_journalier);
-        $poids_objectif = abs((float)$poids_objectif);
+        $delta_par_jour = (float)($poids_gain_activite + $poids_gain_regime);
+        $poids_objectif = (float)$poids_objectif;
 
-        if ($poids_objectif <= 0) {
+        if (abs($poids_objectif) <= 0.000001) {
             return 0;
         }
 
-        if ($progression_par_jour <= 0.000001) {
-            // Impossible à atteindre avec cette combinaison (ou données incohérentes).
+        if ($poids_objectif > 0 && $delta_par_jour <= 0.000001) {
+            return 365;
+        }
+        if ($poids_objectif < 0 && $delta_par_jour >= -0.000001) {
             return 365;
         }
 
-        $nb_jours = 0;
-        $poids_increment = 0;
-        while($poids_increment < $poids_objectif){
-            $nb_jours += 1;
-            $poids_increment += $progression_par_jour;
-
-            if($nb_jours > 365){
-                break;
-            }
+        $jours = (int)ceil(abs($poids_objectif) / max(abs($delta_par_jour), 0.000001));
+        if ($jours < 1) {
+            $jours = 1;
         }
-        return $nb_jours;
+        if ($jours > 365) {
+            $jours = 365;
+        }
+        return $jours;
     }
     public function get_scores_combinaison($regimes, $activites, $poids_objectif, $w1, $w2, $w3){
-        $regimeModel = new Regime();
-        $activiteModel = new Activite();
-        $efficacite = $this->get_efficacite_combinaison($regimes, $activites, $poids_objectif);
-        $cout_total = $regimeModel->get_cout_totals_regimes($regimes, $efficacite);
-        $intensite_total = $activiteModel->get_intensites_somme($activites);
-
-        // Plus petit = mieux (moins de jours, moins cher, moins intense).
-        return ($w1 * (float)$efficacite) + ($w2 * (float)$cout_total) + ($w3 * (float)$intensite_total);
+        [$jours, $cout, $intensite] = $this->get_metrics_combinaison($regimes, $activites, $poids_objectif);
+        return ($w1 * $jours) + ($w2 * $cout) + ($w3 * $intensite);
     }
     public function get_meilleure_combinaison($combinaisons, $poids_objectif, $w1, $w2, $w3){
         $meilleure_combinaison = null;
@@ -79,9 +103,21 @@ class Combinaison{
         return $meilleure_combinaison;
     }
 
-    public function get_meilleure_combinaison_robuste(array $regimes, array $activites, $poids_objectif, $w1, $w2, $w3, int $maxRegimes = 3, int $maxActivites = 2, int $maxCandidatsRegimes = 15, int $maxCandidatsActivites = 15)
+    public function get_meilleure_combinaison_robuste(
+        array $regimes,
+        array $activites,
+        $poids_objectif,
+        $w1,
+        $w2,
+        $w3,
+        int $minRegimes = 1,
+        int $minActivites = 0,
+        int $maxRegimes = 3,
+        int $maxActivites = 2,
+        int $maxCandidatsRegimes = 15,
+        int $maxCandidatsActivites = 15
+    )
     {
-        // Hard caps anti-explosion (surtout si la table grossit).
         if (count($regimes) > $maxCandidatsRegimes) {
             $regimes = array_slice($regimes, 0, $maxCandidatsRegimes);
         }
@@ -92,20 +128,48 @@ class Combinaison{
         $best = null;
         $bestScore = INF;
 
-        for ($kr = 0; $kr <= min($maxRegimes, count($regimes)); $kr++) {
-            foreach ($this->yieldCombinations($regimes, $kr) as $combReg) {
-                for ($ka = 0; $ka <= min($maxActivites, count($activites)); $ka++) {
-                    foreach ($this->yieldCombinations($activites, $ka) as $combAct) {
-                        $score = $this->get_scores_combinaison($combReg, $combAct, $poids_objectif, $w1, $w2, $w3);
-                        if ($score < $bestScore) {
-                            $bestScore = $score;
-                            $best = [
-                                'regimes' => $combReg,
-                                'activites' => $combAct,
-                            ];
-                        }
-                    }
-                }
+        $minRegimes = max(0, $minRegimes);
+        $minActivites = max(0, $minActivites);
+
+        $minJ = null; $maxJ = null;
+        $minC = null; $maxC = null;
+        $minI = null; $maxI = null;
+
+        foreach ($this->yieldRegimeActiviteCombos($regimes, $activites, $minRegimes, $maxRegimes, $minActivites, $maxActivites) as $pair) {
+            [$combReg, $combAct] = $pair;
+            [$jours, $cout, $intensite] = $this->get_metrics_combinaison($combReg, $combAct, $poids_objectif);
+
+            $minJ = ($minJ === null) ? $jours : min($minJ, $jours);
+            $maxJ = ($maxJ === null) ? $jours : max($maxJ, $jours);
+            $minC = ($minC === null) ? $cout : min($minC, $cout);
+            $maxC = ($maxC === null) ? $cout : max($maxC, $cout);
+            $minI = ($minI === null) ? $intensite : min($minI, $intensite);
+            $maxI = ($maxI === null) ? $intensite : max($maxI, $intensite);
+        }
+
+        if ($minJ === null) {
+            return null;
+        }
+
+        $rangeJ = max(1e-9, (float)($maxJ - $minJ));
+        $rangeC = max(1e-9, (float)($maxC - $minC));
+        $rangeI = max(1e-9, (float)($maxI - $minI));
+
+        foreach ($this->yieldRegimeActiviteCombos($regimes, $activites, $minRegimes, $maxRegimes, $minActivites, $maxActivites) as $pair) {
+            [$combReg, $combAct] = $pair;
+            [$jours, $cout, $intensite] = $this->get_metrics_combinaison($combReg, $combAct, $poids_objectif);
+
+            $nJ = ((float)$jours - (float)$minJ) / $rangeJ;
+            $nC = ((float)$cout - (float)$minC) / $rangeC;
+            $nI = ((float)$intensite - (float)$minI) / $rangeI;
+
+            $score = ((float)$w1 * $nJ) + ((float)$w2 * $nC) + ((float)$w3 * $nI);
+            if ($score < $bestScore) {
+                $bestScore = $score;
+                $best = [
+                    'regimes' => $combReg,
+                    'activites' => $combAct,
+                ];
             }
         }
 

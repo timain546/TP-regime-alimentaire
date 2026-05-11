@@ -12,10 +12,6 @@
             <div class="hero-top">
                 <div>
                     <h1>Suggestion personnalisée</h1>
-                    <p>
-                        L'algorithme a sélectionné une combinaison de régimes et d'activités en fonction de votre IMC et de votre objectif.
-                        Le résultat ci-dessous est prêt pour un export PDF avec le profil, la suggestion et le prix estimé.
-                    </p>
                 </div>
                 <div class="badge">
                     <?= $gold_actif ? 'Membre Gold activé' : 'Version standard' ?>
@@ -69,6 +65,23 @@
                                         <span class="value">Calculé au PDF</span>
                                     </div>
                                 </div>
+
+                                <?php
+                                    $idRegime = (int)($regime['id_regime'] ?? 0);
+                                    $composition = ($idRegime > 0 && isset($regime_compositions[$idRegime])) ? $regime_compositions[$idRegime] : [];
+                                ?>
+                                <?php if (!empty($composition)) : ?>
+                                    <div class="details-grid" style="margin-top: 12px;">
+                                        <div class="detail" style="grid-column: 1 / -1;">
+                                            <span class="label">Composition</span>
+                                            <span class="value">
+                                                <?php foreach ($composition as $index => $ligne) : ?>
+                                                    <?= esc($ligne['nom_aliment'] ?? 'Aliment') ?>: <?= number_format((float)($ligne['pourcentage'] ?? 0), 0, ',', ' ') ?>%<?= $index < count($composition) - 1 ? ' · ' : '' ?>
+                                                <?php endforeach; ?>
+                                            </span>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
                             </article>
                         <?php endforeach; ?>
                     </div>

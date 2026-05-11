@@ -15,6 +15,17 @@ class Regime extends Model
             ->get()
             ->getResultArray();
     }
+
+    public function get_composition_regime(int $id): array
+    {
+        return $this->db->table('RegimeFille rf')
+            ->select('a.nom as nom_aliment, rf.pourcentage')
+            ->join('Aliment a', 'a.id_aliment = rf.id_aliment')
+            ->where('rf.id_regime', $id)
+            ->orderBy('rf.pourcentage', 'DESC')
+            ->get()
+            ->getResultArray();
+    }
     public function get_prix_regime(int $id)
     {
         return $this->db->table('PrixRegime')

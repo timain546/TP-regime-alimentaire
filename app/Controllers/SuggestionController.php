@@ -58,7 +58,6 @@ class SuggestionController extends BaseController {
         $regimesCandidats = $regimeModelAll->getAll();
         $activitesCandidats = $activiteModel->getAll();
 
-        // Filtre simple par objectif pour réduire l'espace de recherche.
         $regimesCandidats = array_values(array_filter($regimesCandidats, static function ($r) use ($objectif) {
             $obj = $r['objectif'] ?? 'imc_ideal';
             return $obj === $objectif || $obj === 'imc_ideal';
@@ -69,13 +68,71 @@ class SuggestionController extends BaseController {
             return $obj === $objectif || $obj === 'imc_ideal';
         }));
 
+        $regimesFiltres = [];
+        foreach ($regimesCandidats as $r) {
+            $id = (int)($r['id_regime'] ?? 0);
+            if ($id <= 0) {
+                continue;
+            }
+            $var = (float) Regime::get_poids_gain_journalier($id);
+            if ($poids_cible > 0 && $var > 0.000001) {
+                $regimesFiltres[] = $r;
+            } elseif ($poids_cible < 0 && $var < -0.000001) {
+                $regimesFiltres[] = $r;
+            } elseif (abs((float)$poids_cible) <= 0.000001) {
+                $regimesFiltres[] = $r;
+            }
+        }
+        if (!empty($regimesFiltres)) {
+            $regimesCandidats = $regimesFiltres;
+        }
+
+        $activitesFiltres = [];
+        foreach ($activitesCandidats as $a) {
+            $id = (int)($a['id_activite'] ?? 0);
+            if ($id <= 0) {
+                continue;
+            }
+            $var = (float) $activiteModel->get_variation_poids_journalier($id);
+            if ($poids_cible > 0 && $var > 0.000001) {
+                $activitesFiltres[] = $a;
+            } elseif ($poids_cible < 0 && $var < -0.000001) {
+                $activitesFiltres[] = $a;
+            } elseif (abs((float)$poids_cible) <= 0.000001) {
+                $activitesFiltres[] = $a;
+            }
+        }
+        if (!empty($activitesFiltres)) {
+            $activitesCandidats = $activitesFiltres;
+        }
+
+        $minActivites = count($activitesCandidats) > 0 ? 1 : 0;
+
+        $w1 = 1.0;
+        $w2 = 1.0;
+        $w3 = 1.0; 
+
+        if (in_array('efficacite', $priorites, true)) {
+            $w1 += 3.0;
+        }
+        if (in_array('cout', $priorites, true)) {
+            $w2 += 3.0;
+        }
+        if (in_array('intensite', $priorites, true)) {
+            $w3 += 3.0;
+        }
+
         $meilleure_combinaison = (new Combinaison())->get_meilleure_combinaison_robuste(
             $regimesCandidats,
             $activitesCandidats,
             $poids_cible,
-            in_array('efficacite', $priorites, true) ? 0.5 : 0.2,
-            in_array('cout', $priorites, true) ? 0.3 : 0.1,
-            in_array('intensite', $priorites, true) ? 0.2 : 0.1
+            $w1,
+            $w2,
+            $w3,
+            1,
+            $minActivites,
+            3,
+            2
         );
 
         $regimes = $meilleure_combinaison['regimes'] ?? [];
@@ -86,10 +143,19 @@ class SuggestionController extends BaseController {
         $goldActif = !empty($client['is_gold']);
         $remiseGold = $goldActif ? 0.15 : 0;
         $combinaisonModel = new Combinaison();
-        $estimationJours = $combinaisonModel->get_efficacite_combinaison($regimes, $activites, $poidsCibleAbs);
+        $estimationJours = $combinaisonModel->get_efficacite_combinaison($regimes, $activites, $poids_cible);
 
         $prixBaseEstime = (float) $this->regimeModel->get_cout_totals_regimes($regimes, $estimationJours);
         $prixFinalEstime = (float) $this->regimeModel->cout_plus_gold($regimes, $estimationJours, $remiseGold);
+
+        $regimeCompositions = [];
+        foreach ($regimes as $regime) {
+            $idRegime = (int)($regime['id_regime'] ?? 0);
+            if ($idRegime <= 0) {
+                continue;
+            }
+            $regimeCompositions[$idRegime] = $this->regimeModel->get_composition_regime($idRegime);
+        }
 
         $data = [
             'combinaison' => $meilleure_combinaison,
@@ -102,6 +168,7 @@ class SuggestionController extends BaseController {
             'estimation_jours' => $estimationJours,
             'prix_base_estime' => $prixBaseEstime,
             'prix_final_estime' => $prixFinalEstime,
+            'regime_compositions' => $regimeCompositions,
             'client' => $client,
         ];
 

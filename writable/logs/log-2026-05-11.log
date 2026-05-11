@@ -111,3 +111,22 @@ in SYSTEMPATH/Database/BaseConnection.php on line 606.
  9 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
 10 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
 11 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+CRITICAL - 2026-05-11 10:41:42 --> Error: Class "app\Services\FrontOfficeService" not found
+[Method: GET, Route: porte_monnaie]
+in APPPATH/Controllers/PorteMonnaieController.php on line 9.
+ 1 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\PorteMonnaieController->index()
+ 2 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 4 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 6 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+CRITICAL - 2026-05-11 11:01:38 --> Error: Undefined constant Config\Database::connect
+[Method: POST, Route: porte_monnaie/code]
+in APPPATH/Services/FrontOfficeService.php on line 46.
+ 1 APPPATH/Controllers/PorteMonnaieController.php(39): App\Services\FrontOfficeService->rechargerSoldeClient()
+ 2 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\PorteMonnaieController->verifier_code()
+ 3 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 5 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 7 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()

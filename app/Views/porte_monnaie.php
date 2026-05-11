@@ -1,20 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Porte-monnaie</title>
+    <link rel="stylesheet" href="<?= base_url('css/porte_monnaie.css') ?>">
 </head>
 <body>
-    <p>Votre solde actuel : <span id="solde-actuel"><?= $solde ?></span></p>
-    
-    <p>Inserer un code valide pour augmenter votre solde</p>
-    <form id="codeForm">
-        <input type="text" id="code_recharge" name="code_recharge" placeholder="Ex: REGIM-001" required>
-        <button type="submit">Valider le code</button>
-    </form>
+    <div class="page">
+        <section class="hero">
+            <h1>Porte-monnaie</h1>
+            <p>Rechargez votre solde en entrant un code valide.</p>
+        </section>
 
-    <div id="message" style="margin-top: 15px;"></div>
+        <section class="panel">
+            <div class="balance">
+                <div class="label">Solde actuel</div>
+                <div class="value"><span id="solde-actuel"><?= esc((string)$solde) ?></span></div>
+            </div>
+
+            <form id="codeForm" class="form">
+                <div class="field">
+                    <label for="code_recharge">Code de recharge</label>
+                    <input type="text" id="code_recharge" name="code_recharge" placeholder="Ex: REGIM-001" required>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn btn-primary">Valider le code</button>
+                    <a class="btn btn-secondary" href="<?= base_url('dashboard') ?>">Retour</a>
+                </div>
+            </form>
+
+            <div id="message" class="message" style="display:none;"></div>
+        </section>
+    </div>
 
     <script>
         document.getElementById('codeForm').addEventListener('submit', function(e) {
@@ -25,18 +44,24 @@
             const inputCode = document.getElementById('code_recharge');
             const soldeElement = document.getElementById('solde-actuel');
 
+            function setMessage(text, kind) {
+                messageDiv.style.display = 'block';
+                messageDiv.textContent = text;
+                messageDiv.className = 'message ' + (kind || '');
+            }
+
             if (!code) {
-                messageDiv.textContent = 'Veuillez entrer un code.';
-                messageDiv.style.color = '#e74c3c';
+                setMessage('Veuillez entrer un code.', 'error');
                 return;
             }
             
-            messageDiv.textContent = 'Envoi du code...';
-            messageDiv.style.color = '#3498db';
+            setMessage('Envoi du code...', '');
             
             const xhr = new XMLHttpRequest();
-            xhr.open('POST', '/porte_monnaie/code', true);
+            xhr.open('POST', '<?= base_url('porte_monnaie/code') ?>', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
+            // Nécessaire pour que CodeIgniter détecte la requête comme AJAX (request->isAJAX()).
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
             xhr.onreadystatechange = function() {
                 if (xhr.readyState !== 4) {
@@ -52,32 +77,27 @@
 
                 if (xhr.status === 200 && response) {
                     if (response.success) {
-                        messageDiv.textContent = response.message;
-                        messageDiv.style.color = '#27ae60';
+                        setMessage(response.message, 'success');
                         if (typeof response.solde_actuel !== 'undefined' && soldeElement) {
                             soldeElement.textContent = response.solde_actuel;
                         }
                         inputCode.value = '';
                     } else {
-                        messageDiv.textContent = response.message || 'Le code est invalide.';
-                        messageDiv.style.color = '#e67e22';
+                        setMessage(response.message || 'Le code est invalide.', 'warning');
                     }
                     return;
                 }
 
                 if (xhr.status === 403) {
-                    messageDiv.textContent = 'Requête refusée (403).';
-                    messageDiv.style.color = '#e74c3c';
+                    setMessage('Requête refusée (403).', 'error');
                     return;
                 }
 
-                messageDiv.textContent = 'Erreur serveur, veuillez réessayer.';
-                messageDiv.style.color = '#e74c3c';
+                setMessage('Erreur serveur, veuillez réessayer.', 'error');
             };
 
             xhr.onerror = function() {
-                messageDiv.textContent = 'Erreur réseau, impossible d\'envoyer le code.';
-                messageDiv.style.color = '#e74c3c';
+                setMessage('Erreur réseau, impossible d\'envoyer le code.', 'error');
             };
             
             xhr.send(JSON.stringify({ code: code }));

@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
-use app\Services\FrontOfficeService;
-use app\Model\Code;
+use App\Services\FrontOfficeService;
+use App\Models\Code;
 class PorteMonnaieController extends BaseController{
     public function index(){
         $client = session()->get('client');
@@ -12,8 +12,12 @@ class PorteMonnaieController extends BaseController{
         return view('porte_monnaie', ['solde' => $solde_client]);
     }
     public function verifier_code(){
+        if (!session()->get('is_connected')) {
+            return $this->response->setStatusCode(401)->setJSON(['success' => false, 'message' => 'Veuillez vous connecter.']);
+        }
+
         if (!$this->request->isAJAX()) {
-            return $this->response->setStatusCode(403);
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => 'Requête non-AJAX refusée.']);
         }
         
         $json = $this->request->getJSON();

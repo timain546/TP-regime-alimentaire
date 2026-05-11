@@ -43,7 +43,6 @@ class FrontOfficeService {
         return $db->transStatus();
     }
     public function rechargerSoldeClient($id_client, $montant) {
-        $db = \Config\Database::connect;
 
         $this->transactionModel->insert(
             [

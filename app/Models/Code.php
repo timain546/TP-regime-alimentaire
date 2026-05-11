@@ -1,30 +1,37 @@
 <?php
-namespace app\Model;
-class Code{
-    public $table = "CodeRecharge";
-    public $primaryKey = "id_code_recharge";
+namespace App\Models;
 
-    public $allowedFields = ['valeur', 'is_valide', 'is_utilise', 'id_client', 'date_utilisation'];
+use CodeIgniter\Model;
 
-    public function code_exists($code){
-        return $this->db->table('CodeRecharge')
+class Code extends Model
+{
+    protected $table = 'CodeRecharge';
+    protected $primaryKey = 'id_code_recharge';
+    protected $allowedFields = ['code', 'valeur', 'is_valide', 'is_utilise', 'id_client', 'date_utilisation'];
+
+    public function code_exists(string $code): bool
+    {
+        return $this->builder()
             ->where('code', $code)
             ->get()
             ->getRowArray() !== null;
     }
-    public function code_deja_utilise($code){
-        return $this->db->table('CodeRecharge')
+
+    public function code_deja_utilise(string $code): bool
+    {
+        return $this->builder()
             ->where('code', $code)
             ->where('is_utilise', 1)
             ->get()
             ->getRowArray() !== null;
     }
-    public function get_info_code($code){
-        return $this->db->table('CodeRecharge')
+
+    public function get_info_code(string $code): ?array
+    {
+        $row = $this->builder()
             ->where('code', $code)
             ->get()
             ->getRowArray();
+        return is_array($row) ? $row : null;
     }
-} 
-
-?>
+}

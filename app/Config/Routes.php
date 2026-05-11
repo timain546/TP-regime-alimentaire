@@ -5,7 +5,6 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
 
 $routes->get('admin/login', 'Admin\Auth::login');
 $routes->post('admin/login', 'Admin\Auth::attemptLogin');
@@ -37,7 +36,7 @@ $routes->group('admin', ['filter' => 'adminauth'], static function ($routes) {
     $routes->post('settings/update', 'Admin\Settings::update');
 });
 
-$routes->get("/auth/login", "FrontOffice\FrontOfficeController::login");
+$routes->get("/", "FrontOffice\FrontOfficeController::login");
 $routes->post("/api/auth/login", "FrontOffice\FrontOfficeController::attemptLogin");
 $routes->get("/client/form", "FrontOffice\FrontOfficeController::inscription");
 $routes->post("/api/client/create", "FrontOffice\FrontOfficeController::creerClient");

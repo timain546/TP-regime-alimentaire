@@ -1,0 +1,113 @@
+CRITICAL - 2026-05-11 05:07:01 --> Error: Class "App\Models\BaseModel" not found
+[Method: GET, Route: suggestion]
+in APPPATH/Models/Regime.php on line 3.
+ 1 VENDORPATH/composer/ClassLoader.php(576): include()
+ 2 VENDORPATH/composer/ClassLoader.php(427): Composer\Autoload\{closure}()
+ 3 [internal function]: Composer\Autoload\ClassLoader->loadClass()
+ 4 SYSTEMPATH/Config/Factories.php(291): class_exists()
+ 5 SYSTEMPATH/Config/Factories.php(217): CodeIgniter\Config\Factories::locateClass()
+ 6 SYSTEMPATH/Config/Factories.php(160): CodeIgniter\Config\Factories::getDefinedInstance()
+ 7 SYSTEMPATH/Common.php(833): CodeIgniter\Config\Factories::__callStatic()
+ 8 APPPATH/Controllers/SuggestionController.php(15): model()
+ 9 SYSTEMPATH/CodeIgniter.php(921): App\Controllers\SuggestionController->__construct()
+10 SYSTEMPATH/CodeIgniter.php(488): CodeIgniter\CodeIgniter->createController()
+11 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+12 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+14 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+CRITICAL - 2026-05-11 05:10:04 --> Error: Class "App\Models\Client" not found
+[Method: POST, Route: suggestion/voir]
+in APPPATH/Controllers/SuggestionController.php on line 33.
+ 1 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\SuggestionController->voir()
+ 2 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 4 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 6 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+CRITICAL - 2026-05-11 05:10:54 --> Error: Non-static method App\Models\Client::get_poids_actuel() cannot be called statically
+[Method: POST, Route: suggestion/voir]
+in APPPATH/Controllers/SuggestionController.php on line 33.
+ 1 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\SuggestionController->voir()
+ 2 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 4 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 6 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+CRITICAL - 2026-05-11 05:13:23 --> Error: Class "App\Models\Activite" not found
+[Method: POST, Route: suggestion/voir]
+in APPPATH/Controllers/SuggestionController.php on line 33.
+ 1 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\SuggestionController->voir()
+ 2 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 4 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 6 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+CRITICAL - 2026-05-11 05:14:06 --> ErrorException: Undefined property: App\Models\Client::$db
+[Method: POST, Route: suggestion/voir]
+in APPPATH/Models/Client.php on line 5.
+ 1 APPPATH/Models/Client.php(5): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 APPPATH/Controllers/SuggestionController.php(35): App\Models\Client->get_poids_actuel()
+ 3 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\SuggestionController->voir()
+ 4 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 5 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 6 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 8 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+CRITICAL - 2026-05-11 07:01:25 --> CodeIgniter\Exceptions\BadMethodCallException: Call to undefined method App\Models\Regime::regimeQuery
+[Method: POST, Route: suggestion/voir]
+in SYSTEMPATH/Model.php on line 761.
+ 1 APPPATH/Models/Regime.php(42): CodeIgniter\Model->__call()
+ 2 APPPATH/Controllers/SuggestionController.php(49): App\Models\Regime->getAll()
+ 3 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\SuggestionController->voir()
+ 4 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 5 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 6 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 8 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+ERROR - 2026-05-11 07:08:01 --> Error connecting to the database: mysqli_sql_exception: Connection refused in /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/Database/MySQLi/Connection.php:201
+Stack trace:
+#0 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/Database/MySQLi/Connection.php(201): mysqli->real_connect()
+#1 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/Database/BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect()
+#2 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/Database/BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#3 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+#4 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+#5 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/BaseModel.php(714): CodeIgniter\Model->doFirst()
+#6 /home/pc/Documents/GitHub/TP-regime-alimentaire/app/Controllers/FrontOffice/FrontOfficeController.php(93): CodeIgniter\BaseModel->first()
+#7 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/CodeIgniter.php(951): App\Controllers\FrontOffice\FrontOfficeController->attemptLogin()
+#8 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#9 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+#10 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+#12 /home/pc/Documents/GitHub/TP-regime-alimentaire/public/index.php(59): CodeIgniter\Boot::bootWeb()
+#13 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Connection refused in /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/Database/MySQLi/Connection.php:231
+Stack trace:
+#0 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/Database/BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect()
+#1 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/Database/BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#2 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+#3 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+#4 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/BaseModel.php(714): CodeIgniter\Model->doFirst()
+#5 /home/pc/Documents/GitHub/TP-regime-alimentaire/app/Controllers/FrontOffice/FrontOfficeController.php(93): CodeIgniter\BaseModel->first()
+#6 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/CodeIgniter.php(951): App\Controllers\FrontOffice\FrontOfficeController->attemptLogin()
+#7 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+#8 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+#9 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/Boot.php(417): CodeIgniter\CodeIgniter->run()
+#10 /home/pc/Documents/GitHub/TP-regime-alimentaire/vendor/codeigniter4/framework/system/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+#11 /home/pc/Documents/GitHub/TP-regime-alimentaire/public/index.php(59): CodeIgniter\Boot::bootWeb()
+#12 {main}
+CRITICAL - 2026-05-11 07:08:01 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Connection refused
+[Method: POST, Route: api/auth/login]
+in SYSTEMPATH/Database/BaseConnection.php on line 606.
+ 1 SYSTEMPATH/Database/BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+ 3 SYSTEMPATH/Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH/BaseModel.php(714): CodeIgniter\Model->doFirst()
+ 5 APPPATH/Controllers/FrontOffice/FrontOfficeController.php(93): CodeIgniter\BaseModel->first()
+ 6 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\FrontOffice\FrontOfficeController->attemptLogin()
+ 7 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 8 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 9 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+11 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()

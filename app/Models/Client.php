@@ -1,5 +1,7 @@
 <?php
-class Client{
+namespace App\Models;
+use CodeIgniter\Model;
+class Client extends Model{
     public function get_poids_actuel(int $id_client){
         return $this->db->table('Sante')
             ->where('id_client', $id_client)

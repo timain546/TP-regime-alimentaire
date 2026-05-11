@@ -1,40 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Suggestion - Objectif</title>
+    <link rel="stylesheet" href="<?= base_url('css/suggestion_form.css') ?>">
 </head>
 <body>
-    <form action="/suggestion/voir" method="post">
-        <p>Quel objectif vous voulez atteindre ? </p>
+    <div class="page">
+        <section class="hero">
+            <h1>Définir mon objectif</h1>
+            <p>
+                Choisissez votre objectif puis vos priorités. L'algorithme proposera une combinaison de régimes et d'activités adaptée.
+            </p>
+        </section>
 
-        <input type="radio" id="augmenter" name="objectif" value="augmenter">
-        <label for="augmenter">Augmenter de poids</label>
-        
-        <input type="radio" id="reduire" name="objectif" value="reduire">
-        <label for="reduire">Réduire de poids</label>
+        <section class="panel">
+            <form class="form" action="<?= base_url('suggestion/voir') ?>" method="post">
+                <div class="block">
+                    <h2>Objectif</h2>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="objectif_augmenter" name="objectif" value="augmenter" required>
+                            <label for="objectif_augmenter">
+                                Augmenter de poids
+                                <span class="hint">Prise de masse progressive.</span>
+                            </label>
+                        </div>
 
-        <input type="radio" id="imc_ideal" name="objectif" value="imc_ideal">
-        <label for="imc_ideal">Atteindre l'IMC idéal</label>
+                        <div class="option">
+                            <input type="radio" id="objectif_reduire" name="objectif" value="reduire" required>
+                            <label for="objectif_reduire">
+                                Réduire de poids
+                                <span class="hint">Perte de poids et équilibre.</span>
+                            </label>
+                        </div>
 
-        <div id="kgobjectif" style="display:none; margin-top: 12px;">
-            <label for="kg">Combien de kg ?</label>
-            <input type="number" id="kg" name="kg" min="1" step="0.1" placeholder="Ex: 5">
-        </div>
+                        <div class="option">
+                            <input type="radio" id="objectif_imc" name="objectif" value="imc_ideal" required>
+                            <label for="objectif_imc">
+                                Atteindre l'IMC idéal
+                                <span class="hint">Stabilisation vers un IMC normal.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
 
-        <p>Quels sont vos priorités ? </p>
-        <input type="checkbox" id="efficacite" name="priorite" value="efficacite">
-        <label for="efficacite">Efficacité</label>
+                <div id="kgobjectif" class="field" style="display:none;">
+                    <label for="kg">Combien de kg ?</label>
+                    <input type="number" id="kg" name="kg" min="0.1" step="0.1" placeholder="Ex: 5">
+                </div>
 
-        <input type="checkbox" id="cout" name="priorite" value="cout">
-        <label for="cout">Coût</label>
+                <div class="block">
+                    <h2>Priorités</h2>
+                    <div class="options">
+                        <div class="option">
+                            <input type="checkbox" id="prio_efficacite" name="priorite[]" value="efficacite">
+                            <label for="prio_efficacite">
+                                Efficacité
+                                <span class="hint">Objectif atteint plus rapidement.</span>
+                            </label>
+                        </div>
 
-        <input type="checkbox" id="intensite" name="priorite" value="intensite">
-        <label for="intensite">Intensité</label>
+                        <div class="option">
+                            <input type="checkbox" id="prio_cout" name="priorite[]" value="cout">
+                            <label for="prio_cout">
+                                Coût
+                                <span class="hint">Programme moins cher.</span>
+                            </label>
+                        </div>
 
-        <button type="submit">Valider vos choix</button>
-    </form>
+                        <div class="option">
+                            <input type="checkbox" id="prio_intensite" name="priorite[]" value="intensite">
+                            <label for="prio_intensite">
+                                Intensité
+                                <span class="hint">Activités moins difficiles.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn btn-primary">Voir la suggestion</button>
+                    <a class="btn btn-secondary" href="<?= base_url('/') ?>">Retour</a>
+                </div>
+            </form>
+        </section>
+    </div>
 
     <script>
         const objectifs = document.querySelectorAll('input[name="objectif"]');
@@ -56,6 +108,9 @@
         objectifs.forEach(function (objectif) {
             objectif.addEventListener('change', afficherkgInput);
         });
+
+        // État initial.
+        afficherkgInput();
     </script>
 </body>
 </html>

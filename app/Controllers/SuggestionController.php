@@ -26,11 +26,21 @@ class SuggestionController extends BaseController {
         }
 
         $client = session()->get('client');
-        $objectif = $this->request->getPost('objectif');
-        $kg = $this->request->getPost('kg');
+        $objectif = (string) $this->request->getPost('objectif');
+        $kg = (float) $this->request->getPost('kg');
         $priorites = (array) $this->request->getPost('priorite');
 
-        $poids_user = Client::get_poids_actuel($client['id_client']);
+        if (!in_array($objectif, ['augmenter', 'reduire', 'imc_ideal'], true)) {
+            return redirect()->to(base_url('suggestion'));
+        }
+
+        if (in_array($objectif, ['augmenter', 'reduire'], true) && $kg <= 0) {
+            return redirect()->to(base_url('suggestion'));
+        }
+        $clientModel = new Client();
+        $activiteModel = new Activite();
+        $combinaisonModel = new Combinaison();
+        $poids_user = $clientModel->get_poids_actuel($client['id_client']);
         $poids_cible = 0;
         
         if ($objectif == 'augmenter') {
@@ -38,21 +48,34 @@ class SuggestionController extends BaseController {
         } elseif ($objectif == 'reduire') {
             $poids_cible = -$kg;
         } elseif ($objectif == 'imc_ideal') {
-            $taille_user = Client::get_taille($client['id_client']);
+            $taille_user = $clientModel->get_taille($client['id_client']);
             $taille_user_modif = $taille_user / 100;
             $imc_actuel = $poids_user / ($taille_user_modif * $taille_user_modif);
             $poids_cible = (22.5 * $poids_user) / $imc_actuel - $poids_user;
         }
 
-        $allregimes = Regime::get_combinaisons_regimes_recursives((new Regime())->getAll());
-        $allactivites = Activite::get_combinaisons_activites_recursives((new Activite())->getAll());
-        $combinaisons = Combinaison::get_combinaisons_filtres($allregimes, $allactivites);
-        $meilleure_combinaison = (new Combinaison())->get_meilleure_combinaison(
-            $combinaisons,
+        $regimeModelAll = new Regime();
+        $regimesCandidats = $regimeModelAll->getAll();
+        $activitesCandidats = $activiteModel->getAll();
+
+        // Filtre simple par objectif pour réduire l'espace de recherche.
+        $regimesCandidats = array_values(array_filter($regimesCandidats, static function ($r) use ($objectif) {
+            $obj = $r['objectif'] ?? 'imc_ideal';
+            return $obj === $objectif || $obj === 'imc_ideal';
+        }));
+
+        $activitesCandidats = array_values(array_filter($activitesCandidats, static function ($a) use ($objectif) {
+            $obj = $a['objectif'] ?? 'imc_ideal';
+            return $obj === $objectif || $obj === 'imc_ideal';
+        }));
+
+        $meilleure_combinaison = (new Combinaison())->get_meilleure_combinaison_robuste(
+            $regimesCandidats,
+            $activitesCandidats,
             $poids_cible,
-            in_array('efficacite', $priorites) ? 0.5 : 0.2,
-            in_array('cout', $priorites) ? 0.3 : 0.1,
-            in_array('intensite', $priorites) ? 0.2 : 0.1
+            in_array('efficacite', $priorites, true) ? 0.5 : 0.2,
+            in_array('cout', $priorites, true) ? 0.3 : 0.1,
+            in_array('intensite', $priorites, true) ? 0.2 : 0.1
         );
 
         $regimes = $meilleure_combinaison['regimes'] ?? [];
@@ -62,7 +85,6 @@ class SuggestionController extends BaseController {
         $poidsCibleAbs = abs((float) $poids_cible);
         $goldActif = !empty($client['is_gold']);
         $remiseGold = $goldActif ? 0.15 : 0;
-        $i = 0;
         $combinaisonModel = new Combinaison();
         $estimationJours = $combinaisonModel->get_efficacite_combinaison($regimes, $activites, $poidsCibleAbs);
 

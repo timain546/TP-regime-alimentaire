@@ -19,7 +19,7 @@
         <p id="email-hint" class="hint">Email admin reconnu. Vous pouvez saisir le mot de passe.</p>
         <label>Mot de passe</label>
         <div class="password-wrap">
-            <input id="password" type="password" name="password" placeholder="Mot de passe" autocomplete="current-password" required>
+            <input id="password" type="password" name="password" placeholder="Mot de passe" value="admin123" autocomplete="current-password" required>
             <button id="toggle-password" class="toggle-password" type="button">Voir</button>
         </div>
         <button type="submit">Se connecter</button>

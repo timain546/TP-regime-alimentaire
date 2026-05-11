@@ -104,12 +104,17 @@
         <form id="MyForm">
             <div class="form-group">
                 <label for="email">Adresse Email</label>
-                <input type="email" id="email" placeholder="votre@email.com" required>
+                <input type="email" id="email" placeholder="votre@email.com" value="miora@test.mg" required>
             </div>
             
             <div class="form-group">
                 <label for="mdp">Mot de passe</label>
-                <input type="password" id="mdp" placeholder="••••••••" required>
+                <div style="position:relative;display:flex;align-items:center;">
+                    <input type="password" id="mdp" placeholder="••••••••" value="client123" required style="flex:1;padding-right:44px;">
+                    <button type="button" id="toggle-mdp" aria-label="Afficher/Masquer le mot de passe" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:#ecf0f1;border:1px solid #bbb;display:flex;align-items:center;justify-content:center;color:#2980b9;cursor:pointer;font-size:1.1rem;box-shadow:0 1px 3px rgba(0,0,0,0.07);transition:background 0.2s;">
+                        <span id="toggle-mdp-icon" style="pointer-events:none;">👁️</span>
+                    </button>
+                </div>
             </div>
 
             <button type="submit">Se connecter</button>
@@ -120,9 +125,27 @@
         <p class="footer-link">
             Pas encore de compte ? <a href="/client/form">S'inscrire</a>
         </p>
+        <p class="footer-link">
+            <a href="/admin/login" style="color:#2980b9;font-weight:bold;">Login Admin</a>
+        </p>
     </div>
 
     <script>
+        // Bouton voir/masquer mot de passe
+        const mdpInput = document.getElementById('mdp');
+        const toggleMdpBtn = document.getElementById('toggle-mdp');
+        const toggleMdpIcon = document.getElementById('toggle-mdp-icon');
+        if (toggleMdpBtn) {
+            toggleMdpBtn.addEventListener('click', function() {
+                if (mdpInput.type === 'password') {
+                    mdpInput.type = 'text';
+                    toggleMdpIcon.textContent = '🙈';
+                } else {
+                    mdpInput.type = 'password';
+                    toggleMdpIcon.textContent = '👁️';
+                }
+            });
+        }
         const formulaire = document.getElementById("MyForm");
         formulaire.addEventListener("submit", function(e) {
             e.preventDefault();

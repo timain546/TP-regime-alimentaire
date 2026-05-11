@@ -1,8 +1,9 @@
 CREATE DATABASE IF NOT EXISTS regim CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE regim;
 
+DROP TABLE IF EXISTS ProgrammeElement;
+DROP TABLE IF EXISTS Programme;
 DROP TABLE IF EXISTS Transactions;
-DROP TABLE IF EXISTS SouscriptionRegime;
 DROP TABLE IF EXISTS CodeRecharge;
 DROP TABLE IF EXISTS ParametreGlobal;
 DROP TABLE IF EXISTS DureeActivite;
@@ -121,7 +122,9 @@ CREATE TABLE Programme (
     date_creation DATETIME,
     duree_estimee_jours INT,
     cout_total_estime DECIMAL(10,2),
+    FOREIGN KEY (id_client) REFERENCES Client(id_client) ON DELETE SET NULL
 );
+
 CREATE TABLE ProgrammeElement (
     id_element INT AUTO_INCREMENT PRIMARY KEY,
     id_programme INT NOT NULL,
@@ -132,7 +135,11 @@ CREATE TABLE ProgrammeElement (
     jour_fin INT,
     variation_par_jour DECIMAL(6,3),
     cout_par_jour DECIMAL(10,2) DEFAULT 0,
+    FOREIGN KEY (id_programme) REFERENCES Programme(id_programme) ON DELETE CASCADE,
+    FOREIGN KEY (id_regime) REFERENCES RegimeMere(id_regime) ON DELETE SET NULL,
+    FOREIGN KEY (id_activite) REFERENCES ActiviteSportive(id_activite) ON DELETE SET NULL
 );
+
 CREATE TABLE ParametreGlobal (
     id_parametre INT AUTO_INCREMENT PRIMARY KEY,
     cle VARCHAR(80) NOT NULL UNIQUE,
@@ -222,6 +229,19 @@ INSERT INTO Transactions (id_client, montant, type, date) VALUES
 (2, 20000, 'debit', '2026-05-08 08:00:00'),
 (3, 10000, 'debit', '2026-05-08 08:10:00'),
 (4, 93500, 'debit', '2026-05-08 08:20:00');
+
+INSERT INTO Programme (id_client, objectif, poids_depart, poids_cible, variation_voulue, date_creation, duree_estimee_jours, cout_total_estime) VALUES
+(2, 'imc_ideal', 58.00, 60.00, 2.00, '2026-05-08 08:30:00', 40, 125000),
+(3, 'reduire', 95.00, 92.00, -3.00, '2026-05-08 08:40:00', 30, 90000),
+(4, 'augmenter', 49.00, 53.00, 4.00, '2026-05-08 08:50:00', 30, 93500);
+
+INSERT INTO ProgrammeElement (id_programme, type_element, id_regime, id_activite, jour_debut, jour_fin, variation_par_jour, cout_par_jour) VALUES
+(1, 'regime', 5, NULL, 1, 40, 0.050, 3125.00),
+(1, 'sport', NULL, 4, 1, 40, 0.000, 0.00),
+(2, 'regime', 1, NULL, 1, 30, -0.100, 3000.00),
+(2, 'sport', NULL, 1, 1, 30, -0.067, 0.00),
+(3, 'regime', 3, NULL, 1, 30, 0.133, 3116.67),
+(3, 'sport', NULL, 3, 1, 30, 0.100, 0.00);
 
 
 INSERT INTO ParametreGlobal (cle, valeur, description) VALUES

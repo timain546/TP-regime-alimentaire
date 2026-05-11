@@ -1,0 +1,270 @@
+/* Admin CSS aligned with FrontOffice style (dashboard palette) */
+
+/* Base reset similar to frontoffice */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --fo-bg: #f4f7f6;
+    --fo-surface: #ffffff;
+    --fo-text: #2c3e50;
+    --fo-muted: #7f8c8d;
+    --fo-sidebar: #2c3e50;
+    --fo-sidebar-hover: #34495e;
+    --fo-accent: #3498db;
+    --fo-accent-hover: #2980b9;
+    --fo-border: rgba(0, 0, 0, 0.08);
+    --fo-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    background-color: var(--fo-bg);
+    color: var(--fo-text);
+}
+
+/* Typography */
+main h1 {
+    margin: 0 0 20px;
+    color: var(--fo-text);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+main h2 {
+    margin: 8px 0 0;
+    color: var(--fo-text);
+}
+
+main h3 {
+    margin: 0 0 12px;
+    color: var(--fo-text);
+}
+
+/* Layout */
+header {
+    background-color: var(--fo-sidebar);
+    color: #fff;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header strong {
+    letter-spacing: 0.2px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 16px;
+    font-size: 1rem;
+    display: inline-block;
+    padding: 8px 10px;
+    border-radius: 6px;
+    transition: background 0.3s;
+}
+
+nav a:hover {
+    background-color: var(--fo-sidebar-hover);
+}
+
+main {
+    max-width: 1120px;
+    margin: 24px auto;
+    padding: 0 18px;
+}
+
+/* Panels and grids */
+.panel {
+    background: var(--fo-surface);
+    border: 1px solid var(--fo-border);
+    border-radius: 10px;
+    box-shadow: var(--fo-shadow);
+    padding: 18px;
+    margin-bottom: 18px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--fo-surface);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--fo-shadow);
+}
+
+th,
+ td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background: rgba(52, 152, 219, 0.10);
+    color: var(--fo-text);
+    font-weight: 700;
+}
+
+/* Forms */
+label {
+    display: block;
+    font-weight: 700;
+    margin: 10px 0 6px;
+    color: var(--fo-text);
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--fo-text);
+}
+
+/* Make inline forms (delete buttons) look consistent */
+form[style*="display:inline"] {
+    display: inline;
+}
+
+textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+/* Buttons */
+button,
+.btn {
+    display: inline-block;
+    border: 0;
+    background: var(--fo-accent);
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover,
+.btn:hover {
+    background: var(--fo-accent-hover);
+}
+
+.danger {
+    background: #dc2626;
+}
+
+.danger:hover {
+    background: #b91c1c;
+}
+
+/* Helpers */
+.muted {
+    color: var(--fo-muted);
+}
+
+.ok {
+    color: #047857;
+}
+
+.bad {
+    color: #b91c1c;
+}
+
+/* Alerts */
+.alert {
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    box-shadow: var(--fo-shadow);
+}
+
+.success {
+    background: #dcfce7;
+}
+
+.error {
+    background: #fee2e2;
+}
+
+/* Login page helpers */
+body.admin-login {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+}
+
+.admin-login form {
+    width: min(420px, 92vw);
+    background: var(--fo-surface);
+    border: 1px solid var(--fo-border);
+    border-radius: 12px;
+    box-shadow: var(--fo-shadow);
+    padding: 24px;
+}
+
+.admin-login h1 {
+    margin-bottom: 14px;
+    color: var(--fo-text);
+}
+
+.admin-login label {
+    margin-top: 12px;
+}
+
+.admin-login input {
+    margin: 6px 0 14px;
+}
+
+.admin-login button[type="submit"] {
+    width: 100%;
+}
+
+.admin-login .hint {
+    display: none;
+    margin: -6px 0 12px;
+    color: #047857;
+    font-size: 14px;
+}
+
+.admin-login .password-wrap {
+    position: relative;
+}
+
+.admin-login .password-wrap input {
+    padding-right: 96px;
+}
+
+.admin-login .toggle-password {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    width: auto;
+    background: rgba(52, 152, 219, 0.12);
+    color: var(--fo-text);
+    padding: 8px 10px;
+}
+
+.admin-login .toggle-password:hover {
+    background: rgba(52, 152, 219, 0.20);
+}

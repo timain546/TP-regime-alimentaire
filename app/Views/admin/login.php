@@ -4,19 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login admin - Regim</title>
-    <style>
-        body{margin:0;font-family:Arial,sans-serif;background:#eef2ff;display:grid;place-items:center;min-height:100vh}
-        form{width:min(380px,92vw);background:#fff;border:1px solid #ddd;border-radius:8px;padding:24px}
-        input{width:100%;box-sizing:border-box;padding:10px;margin:6px 0 14px;border:1px solid #cbd5e1;border-radius:6px}
-        button{width:100%;border:0;background:#2563eb;color:#fff;padding:11px;border-radius:6px;cursor:pointer}
-        .error{background:#fee2e2;padding:10px;border-radius:6px}.success{background:#dcfce7;padding:10px;border-radius:6px}
-        .hint{display:none;margin:-6px 0 12px;color:#047857;font-size:14px}
-        .password-wrap{position:relative}
-        .password-wrap input{padding-right:92px}
-        .toggle-password{position:absolute;right:6px;top:6px;width:auto;background:#e5e7eb;color:#111827;padding:7px 10px}
-    </style>
+    <link rel="stylesheet" href="<?= base_url('css/admin.css') ?>">
 </head>
-<body>
+<body class="admin-login">
     <form method="post" action="<?= site_url('admin/login') ?>">
         <h1>Administration</h1>
         <?php if (session('error')): ?><p class="error"><?= esc(session('error')) ?></p><?php endif ?>

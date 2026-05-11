@@ -26,9 +26,16 @@ class Dashboard extends BaseController
                 GROUP BY COALESCE(objectif, 'non_defini')
             ")->getResultArray(),
             'topRegimes' => $db->query("
-                SELECT r.libelle AS nom, COUNT(sr.id_souscription) AS souscriptions, COALESCE(SUM(sr.prix_total), 0) AS total
+                SELECT
+                    r.libelle AS nom,
+                    COUNT(DISTINCT pe.id_programme) AS souscriptions,
+                    COALESCE(SUM(
+                        COALESCE(pe.cout_par_jour, 0) * (GREATEST(COALESCE(pe.jour_fin, 0) - COALESCE(pe.jour_debut, 0) + 1, 0))
+                    ), 0) AS total
                 FROM RegimeMere r
-                LEFT JOIN SouscriptionRegime sr ON sr.id_regime = r.id_regime
+                LEFT JOIN ProgrammeElement pe
+                    ON pe.id_regime = r.id_regime
+                    AND pe.type_element = 'regime'
                 GROUP BY r.id_regime, r.libelle
                 ORDER BY souscriptions DESC, r.libelle ASC
             ")->getResultArray(),
